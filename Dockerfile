@@ -65,8 +65,8 @@ RUN mkdir /tmp/x86_64 && cd /tmp/x86_64 \
   && tar Jxf mingw-w64-x86_64-libiconv-1.16-1-any.pkg.tar.xz \
   && cp -rp mingw64/* /usr/x86_64-w64-mingw32/
 
-ONBUILD RUN WORKDIR /home/mruby/code
-ONBUILD RUN ENV GEM_HOME /home/mruby/.gem/
+ONBUILD WORKDIR /home/mruby/code
+ONBUILD ENV GEM_HOME /home/mruby/.gem/
 
-ONBUILD RUN ENV PATH $GEM_HOME/bin/:$PATH
-ONBUILD RUN ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/
+ONBUILD ENV PATH $GEM_HOME/bin/:$PATH
+ONBUILD ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib/

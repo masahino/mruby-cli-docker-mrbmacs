@@ -65,6 +65,14 @@ RUN mkdir /tmp/x86_64 && cd /tmp/x86_64 \
   && tar Jxf mingw-w64-x86_64-libiconv-1.16-1-any.pkg.tar.xz \
   && cp -rp mingw64/* /usr/x86_64-w64-mingw32/
 
+# arm-linux-gnuebihf
+RUN cd /tmp && wget https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.2.tar.gz \
+  && mkdir /tmp/arm-linux-gnueabihf && cd /tmp/arm-linux-gnueabihf \
+  && tar zxf ../ncurses-6.2.tar.gz && cd ncurses-6.2 \
+  && ./configure --prefix=/usr/arm-linux-gnueabihf/ --host=arm-linux-gnueabihf --without-ada --enable-warnings \
+  --without-normal --enable-pc-files --with-shared --disable-stripping \
+  && make install
+
 ONBUILD WORKDIR /home/mruby/code
 ONBUILD ENV GEM_HOME /home/mruby/.gem/
 

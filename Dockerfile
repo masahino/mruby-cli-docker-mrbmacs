@@ -35,7 +35,6 @@ RUN DEBIAN_FRONTEND="noninteractive" TZ="Asia/Tokyo" apt-get install -y --no-ins
   xz-utils
 RUN cd /opt/ && \
   git clone https://github.com/tpoechtrager/osxcross.git
-RUn ls
 RUN curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/10.15/MacOSX10.15.sdk.tar.xz -o /opt/osxcross/tarballs/MacOSX10.15.sdk.tar.xz
 RUN cd /opt/osxcross/tarballs && tar -xvf MacOSX10.15.sdk.tar.xz -C . && \
     cp -rf /usr/lib/llvm-9/include/c++ MacOSX10.15.sdk/usr/include/c++ && \
@@ -45,6 +44,7 @@ RUN UNATTENDED=y SDK_VERSION=10.15 OSX_VERSION_MIN=10.13 /opt/osxcross/build.sh
 #COPY MacOSX10.15.sdk.tar.bz2 /opt/osxcross/tarballs/
 #RUN echo "\n" | bash /opt/osxcross/build.sh
 RUN rm -rf /opt/osxcross/tarballs/*
+RUN rm -rf /opt/osxcross/build
 ENV PATH /opt/osxcross/target/bin:$PATH
 ENV SHELL /bin/bash
 
@@ -64,6 +64,7 @@ RUN mkdir /tmp/x86_64 && cd /tmp/x86_64 \
   && tar Jxf mingw-w64-x86_64-pdcurses-4.1.0-3-any.pkg.tar.xz \
   && tar Jxf mingw-w64-x86_64-libiconv-1.16-1-any.pkg.tar.xz \
   && cp -rp mingw64/* /usr/x86_64-w64-mingw32/
+RUN cd /tmp && rm -rf x86_64
 
 # arm-linux-gnuebihf
 RUN cd /tmp && wget https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.2.tar.gz \
@@ -72,6 +73,7 @@ RUN cd /tmp && wget https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.2.tar.gz \
   && ./configure --prefix=/usr/arm-linux-gnueabihf/ --host=arm-linux-gnueabihf --without-ada --enable-warnings \
   --without-normal --enable-pc-files --with-shared --disable-stripping --without-pkg-config \
   && make install
+RUN cd /tmp && rm -rf arm-linux-gnuebihf
 
 ONBUILD WORKDIR /home/mruby/code
 ONBUILD ENV GEM_HOME /home/mruby/.gem/

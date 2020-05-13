@@ -70,7 +70,7 @@ RUN cd /tmp && wget https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.2.tar.gz \
   && mkdir /tmp/arm-linux-gnueabihf && cd /tmp/arm-linux-gnueabihf \
   && tar zxf ../ncurses-6.2.tar.gz && cd ncurses-6.2 \
   && ./configure --prefix=/usr/arm-linux-gnueabihf/ --host=arm-linux-gnueabihf --without-ada --enable-warnings \
-  --without-normal --enable-pc-files --with-shared --disable-stripping \
+  --without-normal --enable-pc-files --with-shared --disable-stripping --without-pkg-config \
   && make install
 
 ONBUILD WORKDIR /home/mruby/code

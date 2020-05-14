@@ -2,49 +2,49 @@ FROM ubuntu:20.04
 
 RUN apt-get update && \
 DEBIAN_FRONTEND="noninteractive" TZ="Asia/Tokyo" apt-get install -y --no-install-recommends \
-  automake \
-  bison \
-  clang \
-  curl \
-  g++-multilib \
-  gcc-multilib \
-  git \
-  libncurses5-dev  \
-  libssl-dev \
-  libtool \
-  llvm-dev \
-  lzma-dev \
-  make \
-  mingw-w64 \
-  patch \
-  ruby \
-  unzip
+    automake \
+    bison \
+    clang \
+    curl \
+    g++-multilib \
+    gcc-multilib \
+    git \
+    libncurses5-dev  \
+    libssl-dev \
+    libtool \
+    llvm-dev \
+    lzma-dev \
+    make \
+    mingw-w64 \
+    patch \
+    ruby \
+    unzip && \
+  apt-get clean && apt-get autoremove -y
 
 # install fpm to build packages (deb, rpm)
 #RUN gem install fpm --no-document
 
 # install osx cross compiling tools
 RUN DEBIAN_FRONTEND="noninteractive" TZ="Asia/Tokyo" apt-get install -y --no-install-recommends \
-  cmake \
-  g++-arm-linux-gnueabihf \
-  libc++-9-dev \
-  libtool-bin \
-  libxml2-dev \
-  pkg-config \
-  wget \
-  xz-utils
+    cmake \
+    g++-arm-linux-gnueabihf \
+    libc++-9-dev \
+    libtool-bin \
+    libxml2-dev \
+    pkg-config \
+    wget \
+    xz-utils && \
+  apt-get clean && apt-get autoremove -y
 RUN cd /opt/ && \
-  git clone https://github.com/tpoechtrager/osxcross.git
-RUN curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/10.15/MacOSX10.15.sdk.tar.xz -o /opt/osxcross/tarballs/MacOSX10.15.sdk.tar.xz
-RUN cd /opt/osxcross/tarballs && tar -xvf MacOSX10.15.sdk.tar.xz -C . && \
-    cp -rf /usr/lib/llvm-9/include/c++ MacOSX10.15.sdk/usr/include/c++ && \
-    cp -rf /usr/include/x86_64-linux-gnu/c++/9/bits/ MacOSX10.15.sdk/usr/include/c++/v1/bits && \
-    tar -cJf MacOSX10.15.sdk.tar.xz MacOSX10.15.sdk
-RUN UNATTENDED=y SDK_VERSION=10.15 OSX_VERSION_MIN=10.13 /opt/osxcross/build.sh
-#COPY MacOSX10.15.sdk.tar.bz2 /opt/osxcross/tarballs/
-#RUN echo "\n" | bash /opt/osxcross/build.sh
-RUN rm -rf /opt/osxcross/tarballs/*
-RUN rm -rf /opt/osxcross/build
+  git clone https://github.com/tpoechtrager/osxcross.git && \
+  curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/10.15/MacOSX10.15.sdk.tar.xz -o /opt/osxcross/tarballs/MacOSX10.15.sdk.tar.xz && \
+ cd /opt/osxcross/tarballs && tar -xvf MacOSX10.15.sdk.tar.xz -C . && \
+ cp -rf /usr/lib/llvm-9/include/c++ MacOSX10.15.sdk/usr/include/c++ && \
+ cp -rf /usr/include/x86_64-linux-gnu/c++/9/bits/ MacOSX10.15.sdk/usr/include/c++/v1/bits && \
+ tar -cJf MacOSX10.15.sdk.tar.xz MacOSX10.15.sdk && \
+ UNATTENDED=y SDK_VERSION=10.15 OSX_VERSION_MIN=10.13 /opt/osxcross/build.sh && \
+ rm -rf /opt/osxcross/tarballs/* && \
+ rm -rf /opt/osxcross/build
 ENV PATH /opt/osxcross/target/bin:$PATH
 ENV SHELL /bin/bash
 
@@ -63,8 +63,8 @@ RUN mkdir /tmp/x86_64 && cd /tmp/x86_64 \
   && tar Jxf mingw-w64-x86_64-onigmo-6.2.0-1-any.pkg.tar.xz \
   && tar Jxf mingw-w64-x86_64-pdcurses-4.1.0-3-any.pkg.tar.xz \
   && tar Jxf mingw-w64-x86_64-libiconv-1.16-1-any.pkg.tar.xz \
-  && cp -rp mingw64/* /usr/x86_64-w64-mingw32/
-RUN cd /tmp && rm -rf x86_64
+  && cp -rp mingw64/* /usr/x86_64-w64-mingw32/ \
+  && cd /tmp && rm -rf x86_64
 
 # arm-linux-gnuebihf
 RUN cd /tmp && wget https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.2.tar.gz \
@@ -72,8 +72,8 @@ RUN cd /tmp && wget https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.2.tar.gz \
   && tar zxf ../ncurses-6.2.tar.gz && cd ncurses-6.2 \
   && ./configure --prefix=/usr/arm-linux-gnueabihf/ --host=arm-linux-gnueabihf --without-ada --enable-warnings \
   --without-normal --enable-pc-files --with-shared --disable-stripping --without-pkg-config \
-  && make install
-RUN cd /tmp && rm -rf arm-linux-gnuebihf
+  && make install \
+  && cd /tmp && rm -rf arm-linux-gnuebihf
 
 ONBUILD WORKDIR /home/mruby/code
 ONBUILD ENV GEM_HOME /home/mruby/.gem/

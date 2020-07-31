@@ -6,6 +6,7 @@ DEBIAN_FRONTEND="noninteractive" TZ="Asia/Tokyo" apt-get install -y --no-install
     bison \
     clang \
     curl \
+    g++ \
     g++-multilib \
     gcc-multilib \
     git \

@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:18.04
 
 RUN apt-get update && \
 DEBIAN_FRONTEND="noninteractive" TZ="Asia/Tokyo" apt-get install -y --no-install-recommends \

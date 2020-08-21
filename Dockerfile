@@ -41,7 +41,7 @@ RUN cd /opt/ && \
   curl -L https://github.com/phracker/MacOSX-SDKs/releases/download/10.15/MacOSX10.15.sdk.tar.xz -o /opt/osxcross/tarballs/MacOSX10.15.sdk.tar.xz && \
  cd /opt/osxcross/tarballs && tar -xvf MacOSX10.15.sdk.tar.xz -C . && \
  cp -rf /usr/lib/llvm-9/include/c++ MacOSX10.15.sdk/usr/include/c++ && \
- cp -rf /usr/include/x86_64-linux-gnu/c++/9/bits/ MacOSX10.15.sdk/usr/include/c++/v1/bits && \
+ cp -rf /usr/include/x86_64-linux-gnu/c++/7/bits/ MacOSX10.15.sdk/usr/include/c++/v1/bits && \
  tar -cJf MacOSX10.15.sdk.tar.xz MacOSX10.15.sdk && \
  UNATTENDED=y SDK_VERSION=10.15 OSX_VERSION_MIN=10.13 /opt/osxcross/build.sh && \
  rm -rf /opt/osxcross/tarballs/* && \
@@ -68,9 +68,9 @@ RUN mkdir /tmp/x86_64 && cd /tmp/x86_64 \
   && cd /tmp && rm -rf x86_64
 
 # arm-linux-gnuebihf
-RUN cd /tmp && wget https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.2.tar.gz \
+RUN cd /tmp && wget https://ftp.gnu.org/pub/gnu/ncurses/ncurses-6.1.tar.gz \
   && mkdir /tmp/arm-linux-gnueabihf && cd /tmp/arm-linux-gnueabihf \
-  && tar zxf ../ncurses-6.2.tar.gz && cd ncurses-6.2 \
+  && tar zxf ../ncurses-6.1.tar.gz && cd ncurses-6.1 \
   && ./configure --prefix=/usr/arm-linux-gnueabihf/ --host=arm-linux-gnueabihf --without-ada --enable-warnings \
   --without-normal --enable-pc-files --with-shared --disable-stripping --without-pkg-config \
   && make install \
